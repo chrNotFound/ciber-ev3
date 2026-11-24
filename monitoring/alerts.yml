@@ -1,0 +1,21 @@
+groups:
+  - name: securedev-security
+    rules:
+      - alert: PosibleFuerzaBruta
+        expr: sum(increase(securedev_security_events_total{event=~"login_failed|login_rate_limited"}[5m])) > 10
+        for: 1m
+        labels: {severity: high}
+        annotations: {summary: "Más de 10 fallos de login en 5 min (posible fuerza bruta)"}
+      - alert: AccesoNoAutorizado
+        expr: increase(securedev_security_events_total{event="authz_denied"}[5m]) > 3
+        labels: {severity: high}
+        annotations: {summary: "Intentos repetidos de acceder a tickets ajenos (IDOR)"}
+      - alert: CSRFFallidos
+        expr: increase(securedev_security_events_total{event="csrf_failed"}[5m]) > 3
+        labels: {severity: medium}
+        annotations: {summary: "Peticiones POST con token CSRF inválido"}
+      - alert: AppCaida
+        expr: up{job="securedev-app"} == 0
+        for: 30s
+        labels: {severity: critical}
+        annotations: {summary: "La aplicación no responde"}

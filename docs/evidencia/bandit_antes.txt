@@ -1,0 +1,40 @@
+Run started:2026-11-20 17:51:43.943957+00:00
+
+Test results:
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./app.py:142:16
+141	        query = request.args.get("q", "")
+142	        sql = f"SELECT id, title FROM tickets WHERE title LIKE '%{query}%' ORDER BY id"
+143	        tickets = db().execute(sql).fetchall()
+
+--------------------------------------------------
+>> Issue: [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-605 (https://cwe.mitre.org/data/definitions/605.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b104_hardcoded_bind_all_interfaces.html
+   Location: ./app.py:154:26
+153	if __name__ == "__main__":
+154	    create_app().run(host="0.0.0.0", port=8000)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 135
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 0
+		Medium: 2
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 1
+		Medium: 1
+		High: 0
+Files skipped (0):

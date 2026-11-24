@@ -1,0 +1,13 @@
+.git
+.github
+__pycache__
+*.pyc
+*.db
+.venv
+tests
+docs
+ci
+zap
+monitoring
+Jenkinsfile
+.env

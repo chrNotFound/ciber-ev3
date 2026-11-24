@@ -1,0 +1,13 @@
+# Verifica cada PR de Dependabot: pruebas + pip-audit, para no introducir nuevas vulnerabilidades.
+name: dependency-gate
+on: {pull_request: {paths: ["requirements*.txt"]}}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install -r requirements-dev.txt
+      - run: pip-audit -r requirements.txt --strict
+      - run: pytest -q

@@ -1,0 +1,24 @@
+name: securedev-estudiante
+
+services:
+  app:
+    build: .
+    environment:
+      DATABASE_PATH: /data/securedev.db
+      SECRET_KEY: ${SECRET_KEY:?defina SECRET_KEY en .env}   # VULN-06: ya no hay clave por defecto
+    volumes:
+      - app_data:/data
+    ports:
+      - "127.0.0.1:8000:8000"
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    networks: [secnet]
+
+volumes:
+  app_data:
+
+networks:
+  secnet:
+    name: securedev-net
